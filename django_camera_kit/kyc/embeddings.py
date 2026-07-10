@@ -28,7 +28,9 @@ def extract_face_embedding(image_bgr):
     faces = _get_face_app().get(image_bgr)
     if not faces:
         return None
-    largest = max(faces, key=lambda f: (f.bbox[2] - f.bbox[0]) * (f.bbox[3] - f.bbox[1]))
+    largest = max(
+        faces, key=lambda f: (f.bbox[2] - f.bbox[0]) * (f.bbox[3] - f.bbox[1])
+    )
     return largest.normed_embedding
 
 

@@ -9,7 +9,6 @@ from pgvector.django import VectorExtension
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -19,21 +18,68 @@ class Migration(migrations.Migration):
     operations = [
         VectorExtension(),
         migrations.CreateModel(
-            name='KYCVerification',
+            name="KYCVerification",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('selfie', models.ImageField(upload_to='camera_kit/kyc/selfies/')),
-                ('id_document', models.ImageField(upload_to='camera_kit/kyc/id_documents/')),
-                ('selfie_embedding', pgvector.django.vector.VectorField(blank=True, dimensions=512, null=True)),
-                ('id_face_embedding', pgvector.django.vector.VectorField(blank=True, dimensions=512, null=True)),
-                ('match_score', models.FloatField(blank=True, null=True)),
-                ('liveness_passed', models.BooleanField(default=False)),
-                ('status', models.CharField(choices=[('pending', 'En attente'), ('verified', 'Vérifié'), ('rejected', 'Rejeté')], default='pending', max_length=16)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='kyc_verifications', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("selfie", models.ImageField(upload_to="camera_kit/kyc/selfies/")),
+                (
+                    "id_document",
+                    models.ImageField(upload_to="camera_kit/kyc/id_documents/"),
+                ),
+                (
+                    "selfie_embedding",
+                    pgvector.django.vector.VectorField(
+                        blank=True, dimensions=512, null=True
+                    ),
+                ),
+                (
+                    "id_face_embedding",
+                    pgvector.django.vector.VectorField(
+                        blank=True, dimensions=512, null=True
+                    ),
+                ),
+                ("match_score", models.FloatField(blank=True, null=True)),
+                ("liveness_passed", models.BooleanField(default=False)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "En attente"),
+                            ("verified", "Vérifié"),
+                            ("rejected", "Rejeté"),
+                        ],
+                        default="pending",
+                        max_length=16,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="kyc_verifications",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'indexes': [pgvector.django.indexes.HnswIndex(ef_construction=64, fields=['selfie_embedding'], m=16, name='camera_kit_kyc_selfie_hnsw', opclasses=['vector_cosine_ops'])],
+                "indexes": [
+                    pgvector.django.indexes.HnswIndex(
+                        ef_construction=64,
+                        fields=["selfie_embedding"],
+                        m=16,
+                        name="camera_kit_kyc_selfie_hnsw",
+                        opclasses=["vector_cosine_ops"],
+                    )
+                ],
             },
         ),
     ]

@@ -8,7 +8,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 pytestmark = pytest.mark.django_db
 
-INSIGHTFACE_IMAGES = os.path.join(os.path.dirname(insightface.__file__), "data", "images")
+INSIGHTFACE_IMAGES = os.path.join(
+    os.path.dirname(insightface.__file__), "data", "images"
+)
 
 
 def _load_bytes(filename):
@@ -34,7 +36,9 @@ def test_unauthenticated_request_is_rejected(client):
         "/kyc/verify/",
         {
             "selfie": SimpleUploadedFile("selfie.png", photo, content_type="image/png"),
-            "id_document": SimpleUploadedFile("id.png", photo, content_type="image/png"),
+            "id_document": SimpleUploadedFile(
+                "id.png", photo, content_type="image/png"
+            ),
             "liveness_passed": "true",
         },
     )
@@ -49,7 +53,9 @@ def test_matching_selfie_and_id_are_verified(auth_client, user):
         "/kyc/verify/",
         {
             "selfie": SimpleUploadedFile("selfie.png", photo, content_type="image/png"),
-            "id_document": SimpleUploadedFile("id.png", photo, content_type="image/png"),
+            "id_document": SimpleUploadedFile(
+                "id.png", photo, content_type="image/png"
+            ),
             "liveness_passed": "true",
         },
     )
@@ -76,8 +82,12 @@ def test_mismatched_faces_are_rejected(auth_client):
     response = auth_client.post(
         "/kyc/verify/",
         {
-            "selfie": SimpleUploadedFile("selfie.png", selfie, content_type="image/png"),
-            "id_document": SimpleUploadedFile("id.jpg", other_face, content_type="image/jpeg"),
+            "selfie": SimpleUploadedFile(
+                "selfie.png", selfie, content_type="image/png"
+            ),
+            "id_document": SimpleUploadedFile(
+                "id.jpg", other_face, content_type="image/jpeg"
+            ),
             "liveness_passed": "true",
         },
     )
@@ -95,7 +105,9 @@ def test_missing_liveness_rejects_even_a_perfect_match(auth_client):
         "/kyc/verify/",
         {
             "selfie": SimpleUploadedFile("selfie.png", photo, content_type="image/png"),
-            "id_document": SimpleUploadedFile("id.png", photo, content_type="image/png"),
+            "id_document": SimpleUploadedFile(
+                "id.png", photo, content_type="image/png"
+            ),
             "liveness_passed": "false",
         },
     )
@@ -107,14 +119,18 @@ def test_missing_liveness_rejects_even_a_perfect_match(auth_client):
 
 
 def test_oversized_upload_is_rejected(auth_client, settings):
-    settings.DJANGO_CAMERA_KIT_KYC = {"MAX_UPLOAD_SIZE_MB": 0.001}  # ~1KB cap for this test
+    settings.DJANGO_CAMERA_KIT_KYC = {
+        "MAX_UPLOAD_SIZE_MB": 0.001
+    }  # ~1KB cap for this test
     photo = _load_bytes("Tom_Hanks_54745.png")
 
     response = auth_client.post(
         "/kyc/verify/",
         {
             "selfie": SimpleUploadedFile("selfie.png", photo, content_type="image/png"),
-            "id_document": SimpleUploadedFile("id.png", photo, content_type="image/png"),
+            "id_document": SimpleUploadedFile(
+                "id.png", photo, content_type="image/png"
+            ),
             "liveness_passed": "true",
         },
     )
@@ -130,8 +146,12 @@ def test_throttle_blocks_after_configured_rate(auth_client, settings):
         return auth_client.post(
             "/kyc/verify/",
             {
-                "selfie": SimpleUploadedFile("selfie.png", photo, content_type="image/png"),
-                "id_document": SimpleUploadedFile("id.png", photo, content_type="image/png"),
+                "selfie": SimpleUploadedFile(
+                    "selfie.png", photo, content_type="image/png"
+                ),
+                "id_document": SimpleUploadedFile(
+                    "id.png", photo, content_type="image/png"
+                ),
                 "liveness_passed": "true",
             },
         )

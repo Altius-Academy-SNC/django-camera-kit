@@ -56,7 +56,8 @@ class KYCVerifyView(APIView):
         verification.match_score = score
         verification.status = (
             KYCVerification.Status.VERIFIED
-            if score >= conf.get_setting("MATCH_THRESHOLD") and verification.liveness_passed
+            if score >= conf.get_setting("MATCH_THRESHOLD")
+            and verification.liveness_passed
             else KYCVerification.Status.REJECTED
         )
         verification.save()

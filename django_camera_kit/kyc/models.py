@@ -33,8 +33,12 @@ class KYCVerification(models.Model):
     selfie = models.ImageField(upload_to="camera_kit/kyc/selfies/")
     id_document = models.ImageField(upload_to="camera_kit/kyc/id_documents/")
 
-    selfie_embedding = VectorField(dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True)
-    id_face_embedding = VectorField(dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True)
+    selfie_embedding = VectorField(
+        dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True
+    )
+    id_face_embedding = VectorField(
+        dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True
+    )
     match_score = models.FloatField(null=True, blank=True)
 
     # MVP liveness only: client-asserted result of the in-browser
@@ -43,7 +47,9 @@ class KYCVerification(models.Model):
     # server-side liveness verification is a later phase.
     liveness_passed = models.BooleanField(default=False)
 
-    status = models.CharField(max_length=16, choices=Status.choices, default=Status.PENDING)
+    status = models.CharField(
+        max_length=16, choices=Status.choices, default=Status.PENDING
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
