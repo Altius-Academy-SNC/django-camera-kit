@@ -14,6 +14,10 @@
     var trigger = container.querySelector(".camera-kit-trigger");
     if (!input || !trigger) return;
 
+    // Only hide the native file picker once JS has actually taken over —
+    // if this script fails to load, the raw input stays as the fallback.
+    container.classList.add("camera-kit-js-ready");
+
     trigger.addEventListener("click", function () {
       openScanner(container, input);
     });

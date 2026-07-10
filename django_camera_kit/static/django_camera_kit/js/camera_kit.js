@@ -203,6 +203,9 @@
     stopStream: stopStream,
     captureFrame: captureFrame,
     ready: ready,
+    getCv: function () {
+      return resolvedCv;
+    },
     detectDocumentCorners: detectDocumentCorners,
     warpToDocument: warpToDocument,
     canvasToBlob: canvasToBlob,

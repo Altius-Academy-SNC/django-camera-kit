@@ -5,6 +5,14 @@
   flex-wrap: wrap;
 }
 
+/* Once doc_scan.js has bound the widget, the button is the only way in —
+   the native file input stays in the DOM (still submits the scanned file)
+   but is hidden. If JS never runs, this class is never added and the
+   native picker remains visible as the fallback. */
+.camera-kit-scanner.camera-kit-js-ready input[type="file"] {
+  display: none;
+}
+
 .camera-kit-overlay {
   position: fixed;
   inset: 0;
