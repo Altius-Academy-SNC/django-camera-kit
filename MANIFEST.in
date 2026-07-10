@@ -1,0 +1,2 @@
+recursive-include django_camera_kit/static *
+recursive-include django_camera_kit/templates *

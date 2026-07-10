@@ -32,6 +32,13 @@
     var overlay = buildOverlay();
     document.body.appendChild(overlay.root);
 
+    CameraKit.ready().then(function (isReady) {
+      if (!isReady) {
+        overlay.status.textContent =
+          "opencv.js n'est pas chargé (voir vendor/README.md) : le scan ne fonctionnera pas.";
+      }
+    });
+
     CameraKit.openStream()
       .then(function (stream) {
         session.stream = stream;
@@ -213,7 +220,13 @@
   }
 
   function confirmPage(session, overlay) {
-    var warped = CameraKit.warpToDocument(session.frame, session.corners);
+    var warped;
+    try {
+      warped = CameraKit.warpToDocument(session.frame, session.corners);
+    } catch (err) {
+      overlay.status.textContent = err.message;
+      return;
+    }
     session.pages.push(warped);
     renderPageStrip(session, overlay);
     session.mode = "pages";

@@ -24,13 +24,49 @@
     return canvas;
   }
 
+  // opencv.js is an Emscripten module: window.cv is *not* guaranteed to be
+  // the ready module. Depending on load timing it's a Promise that resolves
+  // to the module, a not-yet-initialized module (no .Mat until the WASM
+  // runtime is up), or the ready module itself. ready() resolves once and
+  // caches the real module so detectDocumentCorners()/warpToDocument() never
+  // have to guess — see https://docs.opencv.org/5.x/utilities.html.
+  var resolvedCv = null;
+  var cvReadyPromise = null;
+
+  function ready() {
+    if (cvReadyPromise) return cvReadyPromise;
+
+    cvReadyPromise = new Promise(function (resolve) {
+      if (!window.cv) {
+        resolve(false); // vendor/opencv.js not loaded, see vendor/README.md
+        return;
+      }
+      if (typeof window.cv.then === "function") {
+        window.cv.then(function (mod) {
+          resolvedCv = mod;
+          resolve(true);
+        });
+      } else if (window.cv.Mat) {
+        resolvedCv = window.cv;
+        resolve(true);
+      } else {
+        window.cv["onRuntimeInitialized"] = function () {
+          resolvedCv = window.cv;
+          resolve(true);
+        };
+      }
+    });
+
+    return cvReadyPromise;
+  }
+
   // Largest 4-point contour in the given canvas, in canvas pixel coordinates.
   // Returns null if OpenCV isn't ready yet or nothing convincing was found,
   // so callers always have a manual-adjustment fallback.
   function detectDocumentCorners(canvas) {
-    if (!window.cv || !window.cv.Mat) return null;
+    var cv = resolvedCv;
+    if (!cv || !cv.Mat) return null;
 
-    var cv = window.cv;
     var src = cv.imread(canvas);
     var gray = new cv.Mat();
     var blurred = new cv.Mat();
@@ -111,7 +147,10 @@
   // Crops and un-warps the quadrilateral defined by `corners` (clockwise,
   // starting top-left) out of `canvas` into a flat rectangular document image.
   function warpToDocument(canvas, corners) {
-    var cv = window.cv;
+    var cv = resolvedCv;
+    if (!cv || !cv.Mat) {
+      throw new Error("django-camera-kit: opencv.js is not ready, see vendor/README.md");
+    }
     var src = cv.imread(canvas);
 
     var widthTop = distance(corners[0], corners[1]);
@@ -163,6 +202,7 @@
     openStream: openStream,
     stopStream: stopStream,
     captureFrame: captureFrame,
+    ready: ready,
     detectDocumentCorners: detectDocumentCorners,
     warpToDocument: warpToDocument,
     canvasToBlob: canvasToBlob,
