@@ -52,6 +52,9 @@ coverage.xml
 # ruff
 .ruff_cache/
 
+# mkdocs
+site/
+
 # Django
 *.log
 db.sqlite3
