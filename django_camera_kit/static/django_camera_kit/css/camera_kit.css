@@ -1,0 +1,89 @@
+.camera-kit-scanner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.camera-kit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.camera-kit-modal {
+  background: #fff;
+  border-radius: 0.5rem;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.camera-kit-status {
+  padding: 0.5rem 1rem;
+  color: #b02a37;
+  font-size: 0.875rem;
+  min-height: 1.5rem;
+}
+
+.camera-kit-video-wrapper,
+.camera-kit-adjust-wrapper {
+  position: relative;
+  background: #000;
+  line-height: 0;
+}
+
+.camera-kit-video-wrapper video,
+.camera-kit-video-wrapper canvas,
+.camera-kit-adjust-wrapper canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.camera-kit-video-wrapper canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.camera-kit-handle {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #00723d;
+  border: 2px solid #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  touch-action: none;
+  cursor: grab;
+}
+
+.camera-kit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.camera-kit-page-strip {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.camera-kit-thumb {
+  height: 96px;
+  border-radius: 0.25rem;
+  border: 1px solid #dee2e6;
+}
