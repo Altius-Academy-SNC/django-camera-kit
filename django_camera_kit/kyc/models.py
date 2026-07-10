@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from pgvector.django import HnswIndex, VectorField
 
@@ -13,6 +14,22 @@ class KYCVerification(models.Model):
         VERIFIED = "verified", "Vérifié"
         REJECTED = "rejected", "Rejeté"
 
+    # Every verification is bound to the authenticated user who submitted
+    # it (KYCVerifyView requires authentication) — a verification result
+    # is meaningless without knowing whose identity it claims to confirm.
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="kyc_verifications",
+    )
+
+    # selfie/id_document contain biometric + government-ID imagery. The
+    # consuming project MUST point Django's storage backend at a private,
+    # access-controlled location for these — never a publicly readable
+    # MEDIA_URL. django-camera-kit doesn't enforce this itself since
+    # storage config is the consuming project's responsibility, but the
+    # API response (KYCVerificationSerializer) deliberately never exposes
+    # these files' URLs.
     selfie = models.ImageField(upload_to="camera_kit/kyc/selfies/")
     id_document = models.ImageField(upload_to="camera_kit/kyc/id_documents/")
 

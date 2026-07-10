@@ -20,7 +20,11 @@ def _get_face_app():
 
 def extract_face_embedding(image_bgr):
     """Return the normalized embedding of the largest face in the image,
-    or None if no face was detected."""
+    or None if no face was detected — also if `image_bgr` is None, which
+    is what cv2.imdecode() returns for corrupt/malformed image data that
+    nonetheless passed DRF's ImageField validation."""
+    if image_bgr is None:
+        return None
     faces = _get_face_app().get(image_bgr)
     if not faces:
         return None
