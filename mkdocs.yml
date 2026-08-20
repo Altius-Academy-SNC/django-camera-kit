@@ -38,6 +38,8 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: ['.']
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -72,7 +74,9 @@ nav:
     - Quick Start: getting-started/quickstart.md
   - Guides:
     - Document Scanning: guides/scan.md
+    - Document Formats: guides/formats.md
     - KYC & Identity Verification: guides/kyc.md
   - Reference:
     - Settings: reference/settings.md
     - API: reference/api.md
+  - Changelog: changelog.md

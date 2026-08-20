@@ -72,3 +72,6 @@ Thumbs.db
 credentials.json
 *.pem
 *.key
+
+# Node (browser-side lint and tests only)
+node_modules/

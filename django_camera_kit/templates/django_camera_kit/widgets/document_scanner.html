@@ -1,6 +1,7 @@
-<div class="camera-kit-scanner" data-camera-kit-output="pdf">
+<div class="camera-kit-scanner" data-camera-kit-config="{{ widget.config_id }}">
+  {{ widget.config|json_script:widget.config_id }}
   <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
   <button type="button" class="btn btn-outline-primary camera-kit-trigger">
-    Scanner un document
+    {{ widget.trigger_label }}
   </button>
 </div>

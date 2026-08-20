@@ -26,13 +26,25 @@ class ContractForm(forms.ModelForm):
 </form>
 ```
 
-That's it. The widget replaces the plain file input with a "Scan document" button. It behaves like a normal file input to the rest of the form — `Contract.signed_document` receives the assembled PDF exactly as if the user had picked a file manually.
+That's it. The widget replaces the plain file input with a "Scan a document"
+button. The camera opens behind an A4-shaped guide, the page is flattened to
+that exact ratio, and `Contract.signed_document` receives the assembled PDF as
+if the user had picked a file by hand.
+
+Scanning a stack of pages? One argument:
+
+```python
+DocumentScannerWidget(document_format="a4", batch=True)
+```
+
+The camera then stays open and chains the pages on its own — see
+[Document scanning](../guides/scan.md).
 
 Listen for `camerakit:scan-complete` on the widget's container if you want a JS hook (e.g. to enable a submit button or show a thumbnail):
 
 ```js
-document.addEventListener("camerakit:scan-complete", (e) => {
-  console.log(`Scanned ${e.detail.pageCount} page(s)`, e.detail.file);
+document.addEventListener("camerakit:scan-complete", (event) => {
+  console.log(`Scanned ${event.detail.pageCount} page(s)`, event.detail.files);
 });
 ```
 
@@ -45,12 +57,18 @@ from django_camera_kit.kyc.widgets import KYCVerificationWidget
 
 class SignupForm(forms.Form):
     email = forms.EmailField()
-    kyc_verification_id = forms.IntegerField(
-        widget=KYCVerificationWidget(verify_url="/kyc/verify/")
-    )
+    kyc_verification_id = forms.IntegerField(widget=KYCVerificationWidget())
 ```
 
-The widget renders a "Verify my identity" button next to a hidden field. Clicking it opens the camera, captures the ID document, then runs a live head-movement challenge before capturing the selfie, and POSTs both to your `verify_url`. On a successful match, the hidden field is populated with the resulting `KYCVerification` id — your form's own validation (`clean_kyc_verification_id`, a required field, whatever fits your flow) decides what "verified" means for that submission.
+The widget renders a "Verify my identity" button next to a hidden field.
+Clicking it opens the camera, captures the ID document, then asks for three
+head poses — look at the camera, turn left, turn right — and posts every frame
+to the verification endpoint (`reverse("camera_kit_kyc:verify")` by default;
+pass `verify_url=` to override it).
+
+The server compares the faces *and* re-measures the head pose on each frame. On
+success the hidden field receives the `KYCVerification` id, and your own
+validation decides what "verified" means for that submission.
 
 ```python
 def clean_kyc_verification_id(self):

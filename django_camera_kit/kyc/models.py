@@ -33,23 +33,23 @@ class KYCVerification(models.Model):
     selfie = models.ImageField(upload_to="camera_kit/kyc/selfies/")
     id_document = models.ImageField(upload_to="camera_kit/kyc/id_documents/")
 
-    selfie_embedding = VectorField(
-        dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True
-    )
-    id_face_embedding = VectorField(
-        dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True
-    )
+    selfie_embedding = VectorField(dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True)
+    id_face_embedding = VectorField(dimensions=EMBEDDING_DIMENSIONS, null=True, blank=True)
     match_score = models.FloatField(null=True, blank=True)
 
-    # MVP liveness only: client-asserted result of the in-browser
-    # head-movement challenge. Not a server-verified anti-spoofing signal —
-    # a malicious client could send True without ever performing it. Real
-    # server-side liveness verification is a later phase.
+    # Result of the head-pose challenge, recomputed server-side from the
+    # frames the browser sent (see liveness.py). The browser's own opinion is
+    # never read: it has no field to send it in.
+    #
+    # This defeats a still photo and a replayed clip of the wrong sequence.
+    # It does not defeat a determined attacker holding a phone that plays a
+    # matching video, nor a rendered deepfake — passive texture and depth
+    # analysis is a later phase.
     liveness_passed = models.BooleanField(default=False)
+    liveness_score = models.FloatField(null=True, blank=True)
+    liveness_reason = models.CharField(max_length=32, blank=True, default="")
 
-    status = models.CharField(
-        max_length=16, choices=Status.choices, default=Status.PENDING
-    )
+    status = models.CharField(max_length=16, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

@@ -15,12 +15,27 @@ INSTALLED_APPS = [
 ]
 ```
 
-The scan widget needs two vendor JS files that aren't committed to the PyPI package (large, versioned build artifacts): `opencv.js` and `jspdf.umd.min.js`. Download pinned versions into `django_camera_kit/static/django_camera_kit/vendor/` — see [`vendor/README.md`](https://github.com/Altius-Academy-SNC/django-camera-kit/blob/main/django_camera_kit/static/django_camera_kit/vendor/README.md) in the repo for exact files and versions.
+`opencv.js` and `jspdf.umd.min.js` ship inside the package — no CDN, no network
+call at runtime, which is the point in low-connectivity deployments. They are
+also why the wheel weighs about 14 MB.
 
-!!! note
-    If you install from a source checkout of the repo instead of a released wheel, the vendor files are already committed and nothing extra is needed.
+Then run `collectstatic` as usual, and you are done: no model, no migration, no
+`urls.py` change. The scan module is a widget and its static assets.
 
-No models, no migrations, no `urls.py` changes — the scan module is entirely client-side widget + static assets.
+### Optional configuration
+
+```python
+# settings.py
+DJANGO_CAMERA_KIT = {
+    "DEFAULT_FORMAT": "a4",
+    "BATCH": False,
+    "OUTPUT": "pdf",
+}
+```
+
+Every key is also a widget argument. See the
+[settings reference](../reference/settings.md) and
+[Document formats](../guides/formats.md).
 
 ## KYC module
 

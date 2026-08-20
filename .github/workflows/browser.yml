@@ -1,0 +1,38 @@
+name: Browser code
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: browser-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install tooling
+        run: npm ci
+
+      # R10 applies to every language in the project: the scanner and KYC
+      # scripts are held to the same complexity, depth and 60-line limits as
+      # the Python side.
+      - name: Lint
+        run: npm run lint
+
+      # The geometry the scanner and the liveness challenge rely on is pure
+      # and runs in a VM context — no browser, no camera, no OpenCV.
+      - name: Test
+        run: npm test

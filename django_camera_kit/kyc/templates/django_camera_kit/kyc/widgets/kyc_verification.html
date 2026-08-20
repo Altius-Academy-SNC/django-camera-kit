@@ -1,7 +1,8 @@
-<div class="camera-kit-kyc" data-verify-url="{{ widget.verify_url|default:'' }}">
+<div class="camera-kit-kyc" data-camera-kit-config="{{ widget.config_id }}">
+  {{ widget.config|json_script:widget.config_id }}
   <input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
   <button type="button" class="btn btn-outline-primary camera-kit-kyc-trigger">
-    Vérifier mon identité
+    {{ widget.trigger_label }}
   </button>
   <span class="camera-kit-kyc-status"></span>
 </div>

@@ -1,0 +1,136 @@
+{
+  "format": "a4",
+  "formats": [
+    {
+      "key": "a3",
+      "label": "A3 (297 × 420 mm)",
+      "widthMm": 297.0,
+      "heightMm": 420.0,
+      "aspectRatio": 0.707143,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "a4",
+      "label": "A4 (210 × 297 mm)",
+      "widthMm": 210.0,
+      "heightMm": 297.0,
+      "aspectRatio": 0.707071,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "a5",
+      "label": "A5 (148 × 210 mm)",
+      "widthMm": 148.0,
+      "heightMm": 210.0,
+      "aspectRatio": 0.704762,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "a6",
+      "label": "A6 (105 × 148 mm)",
+      "widthMm": 105.0,
+      "heightMm": 148.0,
+      "aspectRatio": 0.709459,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "letter",
+      "label": "Letter (216 × 279 mm)",
+      "widthMm": 215.9,
+      "heightMm": 279.4,
+      "aspectRatio": 0.772727,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "legal",
+      "label": "Legal (216 × 356 mm)",
+      "widthMm": 215.9,
+      "heightMm": 355.6,
+      "aspectRatio": 0.607143,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "id_card",
+      "label": "ID card (85.6 × 54 mm)",
+      "widthMm": 53.98,
+      "heightMm": 85.6,
+      "aspectRatio": 0.630607,
+      "naturalOrientation": "landscape"
+    },
+    {
+      "key": "passport",
+      "label": "Passport page (125 × 88 mm)",
+      "widthMm": 88.0,
+      "heightMm": 125.0,
+      "aspectRatio": 0.704,
+      "naturalOrientation": "landscape"
+    },
+    {
+      "key": "photo",
+      "label": "Photo (10 × 15 cm)",
+      "widthMm": 100.0,
+      "heightMm": 150.0,
+      "aspectRatio": 0.666667,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "receipt",
+      "label": "Receipt (80 × 200 mm)",
+      "widthMm": 80.0,
+      "heightMm": 200.0,
+      "aspectRatio": 0.4,
+      "naturalOrientation": "portrait"
+    },
+    {
+      "key": "original",
+      "label": "Keep original proportions",
+      "widthMm": 0.0,
+      "heightMm": 0.0,
+      "aspectRatio": 0.0,
+      "naturalOrientation": "portrait"
+    }
+  ],
+  "orientation": "auto",
+  "output": "pdf",
+  "multiPage": true,
+  "batch": false,
+  "autoCapture": true,
+  "allowFormatChange": true,
+  "maxPages": 50,
+  "quality": 0.92,
+  "detectionWidth": 480,
+  "labels": {
+    "trigger": "Scan a document",
+    "cancel": "Cancel",
+    "close": "Close",
+    "start": "Start scanning",
+    "capture": "Capture",
+    "retake": "Retake",
+    "confirmPage": "Use this page",
+    "addPage": "Next page",
+    "finish": "Finish",
+    "deletePage": "Delete this page",
+    "format": "Document format",
+    "orientation": "Orientation",
+    "portrait": "Portrait",
+    "landscape": "Landscape",
+    "autoCapture": "Capture automatically",
+    "batch": "Series mode: chain the pages without stopping",
+    "adjustTitle": "Drag the corners if the frame is off",
+    "pagesTitle": "Captured pages",
+    "pageNumber": "Page {number}",
+    "pageCount": "{count} page(s)",
+    "hintSearching": "Point the camera at the document",
+    "hintTooSmall": "Move closer to the document",
+    "hintWrongShape": "This does not match the selected format",
+    "hintBlurry": "Hold the camera steady, the image is blurry",
+    "hintHoldStill": "Hold still…",
+    "hintCapturing": "Capturing…",
+    "hintNextPage": "Page {count} captured — show the next one",
+    "hintManual": "No document detected: capture manually",
+    "errorCamera": "Cannot access the camera: {error}",
+    "errorEngine": "The scanning engine did not load: manual capture only.",
+    "errorMaxPages": "Page limit reached ({max}).",
+    "errorNoPage": "Capture at least one page first."
+  }
+}
