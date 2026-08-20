@@ -102,6 +102,10 @@ The browser code contains no user-facing text. Every string comes from the
 widget as a JSON block, translated server-side through the usual `.po`
 catalogues — so the scanner speaks whatever language the request does.
 
+French ships with the package: set `LANGUAGE_CODE = "fr"` and the scanner is in
+French, formats included. Any other language is a `makemessages` away in your
+own project, or a pull request here.
+
 ## Offline and self-hosted assets
 
 `opencv.js` (~13 MB) and `jspdf.umd.min.js` are vendored into the package

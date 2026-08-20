@@ -142,7 +142,8 @@ max-statements = 40
 # R8 - documented deferred import: insightface loads a model pack weighing
 # tens of megabytes, so it is imported on first use, not at startup.
 "django_camera_kit/kyc/embeddings.py" = ["PLC0415"]
-"tests/*" = ["S101", "PLR2004", "ARG001", "ARG002", "S105"]
+# The French assertions use typographic apostrophes, as the catalogue does.
+"tests/*" = ["S101", "PLR2004", "ARG001", "ARG002", "S105", "RUF001"]
 "tests_kyc/*" = [
     "S101",
     "PLR2004",

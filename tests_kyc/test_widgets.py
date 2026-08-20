@@ -41,3 +41,9 @@ class TestKYCWidget:
         media_html = str(VerificationForm().media)
         assert "django_camera_kit/kyc/js/face_kit.js" in media_html
         assert "django_camera_kit/kyc/js/kyc_capture.js" in media_html
+
+    def test_pulls_the_shared_overlay_stylesheet(self):
+        """The overlay layout lives in camera_kit.css, not in the KYC one."""
+        media_html = str(VerificationForm().media)
+        assert "django_camera_kit/css/camera_kit.css" in media_html
+        assert "django_camera_kit/kyc/css/kyc_capture.css" in media_html

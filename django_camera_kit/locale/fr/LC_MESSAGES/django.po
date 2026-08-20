@@ -1,0 +1,294 @@
+# French translations for django-camera-kit.
+# Copyright (C) 2026 Altius Academy SNC
+# This file is distributed under the same license as the PACKAGE package.
+# Altius Academy SNC, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-20 06:38-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Altius Academy SNC\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: formats.py:88
+msgid "A3 (297 × 420 mm)"
+msgstr "A3 (297 × 420 mm)"
+
+#: formats.py:89
+msgid "A4 (210 × 297 mm)"
+msgstr "A4 (210 × 297 mm)"
+
+#: formats.py:90
+msgid "A5 (148 × 210 mm)"
+msgstr "A5 (148 × 210 mm)"
+
+#: formats.py:91
+msgid "A6 (105 × 148 mm)"
+msgstr "A6 (105 × 148 mm)"
+
+#: formats.py:92
+msgid "Letter (216 × 279 mm)"
+msgstr "Letter (216 × 279 mm)"
+
+#: formats.py:93
+msgid "Legal (216 × 356 mm)"
+msgstr "Legal (216 × 356 mm)"
+
+#: formats.py:95
+msgid "ID card (85.6 × 54 mm)"
+msgstr "Carte d’identité (85,6 × 54 mm)"
+
+#: formats.py:97
+msgid "Passport page (125 × 88 mm)"
+msgstr "Page de passeport (125 × 88 mm)"
+
+#: formats.py:98
+msgid "Photo (10 × 15 cm)"
+msgstr "Photo (10 × 15 cm)"
+
+#: formats.py:99
+msgid "Receipt (80 × 200 mm)"
+msgstr "Reçu (80 × 200 mm)"
+
+#: formats.py:100
+msgid "Keep original proportions"
+msgstr "Garder les proportions d’origine"
+
+#: kyc/serializers.py:16
+#, python-format
+msgid "File too large (max %(max)s MB)."
+msgstr "Fichier trop volumineux (max %(max)s Mo)."
+
+#: kyc/widgets.py:15
+msgid "Verify my identity"
+msgstr "Vérifier mon identité"
+
+#: kyc/widgets.py:16 widgets.py:25
+msgid "Cancel"
+msgstr "Annuler"
+
+#: kyc/widgets.py:17 widgets.py:26
+msgid "Close"
+msgstr "Fermer"
+
+#: kyc/widgets.py:18
+msgid "Capture the ID document"
+msgstr "Photographier la pièce d’identité"
+
+#: kyc/widgets.py:19
+msgid "Send"
+msgstr "Envoyer"
+
+#: kyc/widgets.py:20
+msgid "Start over"
+msgstr "Tout recommencer"
+
+#: kyc/widgets.py:21
+msgid "Redo the face step"
+msgstr "Refaire l’étape du visage"
+
+#: kyc/widgets.py:22
+msgid "Place your ID document inside the frame"
+msgstr "Placez votre pièce d’identité dans le cadre"
+
+#: kyc/widgets.py:23
+msgid "Fit your face inside the oval"
+msgstr "Placez votre visage dans l’ovale"
+
+#: kyc/widgets.py:24
+#, python-brace-format
+msgid "{done}/{total}"
+msgstr "{done}/{total}"
+
+#: kyc/widgets.py:25
+msgid "Verifying…"
+msgstr "Vérification en cours…"
+
+#: kyc/widgets.py:26
+msgid "Identity verified."
+msgstr "Identité vérifiée."
+
+#: kyc/widgets.py:27
+msgid "Verification refused — please try again."
+msgstr "Vérification refusée — réessayez."
+
+#: kyc/widgets.py:28
+msgid "Verified"
+msgstr "Vérifié"
+
+#: kyc/widgets.py:29
+msgid "Not verified"
+msgstr "Non vérifié"
+
+#: kyc/widgets.py:30
+msgid "No face detected — look at the camera"
+msgstr "Aucun visage détecté — regardez l’objectif"
+
+#: kyc/widgets.py:31
+msgid "Move closer"
+msgstr "Approchez-vous"
+
+#: kyc/widgets.py:32
+msgid "Move back a little"
+msgstr "Reculez un peu"
+
+#: kyc/widgets.py:33
+msgid "Centre your face in the oval"
+msgstr "Centrez votre visage dans l’ovale"
+
+#: kyc/widgets.py:34
+msgid "Look straight at the camera"
+msgstr "Regardez droit vers l’objectif"
+
+#: kyc/widgets.py:35
+msgid "Slowly turn your head to the left"
+msgstr "Tournez lentement la tête vers la gauche"
+
+#: kyc/widgets.py:36
+msgid "Slowly turn your head to the right"
+msgstr "Tournez lentement la tête vers la droite"
+
+#: kyc/widgets.py:37 widgets.py:52
+#, python-brace-format
+msgid "Cannot access the camera: {error}"
+msgstr "Impossible d’accéder à la caméra : {error}"
+
+#: kyc/widgets.py:38
+msgid "The face engine did not load; verification is unavailable."
+msgstr "Le moteur de détection ne s’est pas chargé ; la vérification est indisponible."
+
+#: kyc/widgets.py:39
+#, python-brace-format
+msgid "Network error: {error}"
+msgstr "Erreur réseau : {error}"
+
+#: kyc/widgets.py:40
+msgid "The verification could not be processed."
+msgstr "La vérification n’a pas pu être traitée."
+
+#: widgets.py:24
+msgid "Scan a document"
+msgstr "Scanner un document"
+
+#: widgets.py:27
+msgid "Start scanning"
+msgstr "Commencer le scan"
+
+#: widgets.py:28
+msgid "Capture"
+msgstr "Capturer"
+
+#: widgets.py:29
+msgid "Retake"
+msgstr "Reprendre"
+
+#: widgets.py:30
+msgid "Use this page"
+msgstr "Valider la page"
+
+#: widgets.py:31
+msgid "Next page"
+msgstr "Page suivante"
+
+#: widgets.py:32
+msgid "Finish"
+msgstr "Terminer"
+
+#: widgets.py:33
+msgid "Delete this page"
+msgstr "Supprimer cette page"
+
+#: widgets.py:34
+msgid "Document format"
+msgstr "Format du document"
+
+#: widgets.py:35
+msgid "Orientation"
+msgstr "Orientation"
+
+#: widgets.py:36
+msgid "Portrait"
+msgstr "Portrait"
+
+#: widgets.py:37
+msgid "Landscape"
+msgstr "Paysage"
+
+#: widgets.py:38
+msgid "Capture automatically"
+msgstr "Capturer automatiquement"
+
+#: widgets.py:39
+msgid "Series mode: chain the pages without stopping"
+msgstr "Mode série : enchaîner les pages sans s’arrêter"
+
+#: widgets.py:40
+msgid "Drag the corners if the frame is off"
+msgstr "Déplacez les coins si le cadrage est faux"
+
+#: widgets.py:41
+msgid "Captured pages"
+msgstr "Pages capturées"
+
+#: widgets.py:42
+#, python-brace-format
+msgid "Page {number}"
+msgstr "Page {number}"
+
+#: widgets.py:43
+#, python-brace-format
+msgid "{count} page(s)"
+msgstr "{count} page(s)"
+
+#: widgets.py:44
+msgid "Point the camera at the document"
+msgstr "Visez le document avec la caméra"
+
+#: widgets.py:45
+msgid "Move closer to the document"
+msgstr "Rapprochez-vous du document"
+
+#: widgets.py:46
+msgid "This does not match the selected format"
+msgstr "Cela ne correspond pas au format choisi"
+
+#: widgets.py:47
+msgid "Hold the camera steady, the image is blurry"
+msgstr "Stabilisez la caméra, l’image est floue"
+
+#: widgets.py:48
+msgid "Hold still…"
+msgstr "Ne bougez plus…"
+
+#: widgets.py:49
+msgid "Capturing…"
+msgstr "Capture en cours…"
+
+#: widgets.py:50
+#, python-brace-format
+msgid "Page {count} captured — show the next one"
+msgstr "Page {count} capturée — présentez la suivante"
+
+#: widgets.py:51
+msgid "No document detected: capture manually"
+msgstr "Aucun document détecté : capturez manuellement"
+
+#: widgets.py:53
+msgid "The scanning engine did not load: manual capture only."
+msgstr "Le moteur de scan ne s’est pas chargé : capture manuelle uniquement."
+
+#: widgets.py:54
+#, python-brace-format
+msgid "Page limit reached ({max})."
+msgstr "Limite de pages atteinte ({max})."
+
+#: widgets.py:55
+msgid "Capture at least one page first."
+msgstr "Capturez au moins une page d’abord."

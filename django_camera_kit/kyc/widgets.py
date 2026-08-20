@@ -57,7 +57,14 @@ class KYCVerificationWidget(forms.HiddenInput):
     template_name = "django_camera_kit/kyc/widgets/kyc_verification.html"
 
     class Media:
-        css = {"all": ("django_camera_kit/kyc/css/kyc_capture.css",)}
+        # The overlay layout itself lives in camera_kit.css: a form that shows
+        # only the KYC widget still needs it, so it is declared here too.
+        css = {
+            "all": (
+                "django_camera_kit/css/camera_kit.css",
+                "django_camera_kit/kyc/css/kyc_capture.css",
+            )
+        }
         js = (
             "django_camera_kit/vendor/opencv.js",
             "django_camera_kit/js/camera_kit.js",
