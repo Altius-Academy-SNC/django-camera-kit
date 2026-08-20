@@ -1,32 +1,119 @@
-# Document Scanning
+# Document scanning
 
 ## How it works
 
-`DocumentScannerWidget` (`django_camera_kit.widgets.DocumentScannerWidget`) is a `forms.FileInput` subclass. It renders the normal `<input type="file">` plus a trigger button. Everything else happens in the browser:
+`DocumentScannerWidget` is a `forms.FileInput` subclass. It renders the normal
+`<input type="file">` plus a trigger button, and everything else happens in the
+browser:
 
-1. **Live capture** — `getUserMedia` opens the camera (rear-facing by default).
-2. **Edge detection** — every frame, `camera_kit.js` runs a classic OpenCV pipeline (grayscale → Gaussian blur → Canny → `findContours` → `approxPolyDP`) via OpenCV.js (WASM) to find the largest 4-point contour, and draws it as an overlay.
-3. **Manual override** — on capture, four draggable corner handles appear over the frozen frame, seeded from the auto-detected quad (or a default inset rectangle if detection failed). The user can drag any corner before confirming the page.
-4. **Perspective warp** — confirming a page runs `cv.warpPerspective()` to flatten the quadrilateral into a rectangular page image.
-5. **Multi-page** — repeat for as many pages as needed; a thumbnail strip tracks progress.
-6. **Export** — "Finish" assembles all pages into a single PDF via jsPDF, and writes it into the underlying file input via the `DataTransfer` API, dispatching a normal `change` event plus a custom `camerakit:scan-complete` event.
+1. **Setup** — the user picks the format, the orientation and the capture mode
+   (unless the widget imposes them). See [Document formats](formats.md).
+2. **Live capture** — `getUserMedia` opens the camera, rear-facing by default.
+3. **Edge detection** — about eight times a second, the frame is downscaled to
+   480 px and run through a classic OpenCV pipeline (grayscale → Gaussian blur
+   → Canny → `findContours` → `approxPolyDP`). Candidates are scored on how
+   much of the frame they cover *and* how close their proportions are to the
+   chosen format; the best one is drawn over the video. Detection never runs on
+   the full-resolution frame — that is what makes it usable on a phone.
+4. **Capture** — automatic once the shape has been steady for four detections
+   and the image is sharp, or on the button, always.
+5. **Adjust** — four draggable handles appear over the frozen frame, seeded
+   from the detected quadrilateral or from the guide when detection missed.
+6. **Flatten** — `cv.warpPerspective()` un-warps the quadrilateral to exactly
+   the format's aspect ratio.
+7. **Export** — the pages are assembled into a PDF whose pages carry the
+   format's real millimetre size, or into one JPEG per page, then written into
+   the file input through the `DataTransfer` API. A `change` event and a
+   `camerakit:scan-complete` event are dispatched.
 
-No server round-trip happens during scanning. The widget doesn't know or care what model/view the surrounding form belongs to.
+No server round-trip happens while scanning. The widget does not know or care
+what model the surrounding form belongs to.
 
-## Styling
+## Series mode: scanning a stack without stopping
 
-The widget's own CSS (`camera_kit.css`) only covers structural/positioning rules (the fullscreen overlay, corner handles, thumbnail strip). Button styling (`btn`, `btn-primary`, etc.) assumes **Bootstrap** (or Bootstrap Native) is already loaded on the page. If it isn't, the buttons still work, just unstyled.
+Twenty pages to digitise? Series mode keeps the camera open: each page is
+captured, flattened and stacked on its own, and the scanner waits for the next
+one. There is a flash, a thumbnail appears in the strip, and a cooldown of
+about a second and a half gives the user time to swap the sheet — without it
+the same page is captured three times.
+
+```python
+DocumentScannerWidget(document_format="a4", batch=True, auto_capture=True)
+```
+
+The corner-adjustment step is skipped in series mode: stopping on every page to
+confirm is exactly what the mode exists to avoid. Pages can still be deleted
+one by one from the thumbnail strip before finishing.
+
+For a careful, page-by-page scan, leave `batch=False`: every capture goes
+through the adjustment step and has to be confirmed.
+
+## Automatic capture
+
+Auto-capture fires when three conditions hold at once: a quadrilateral is
+detected that matches the format, it has not moved for four consecutive
+detections, and the frame is not blurry (variance of the Laplacian). A short
+countdown follows so the shutter never surprises the user, and the guide turns
+green while it runs.
+
+```python
+DocumentScannerWidget(auto_capture=False)   # button only
+```
+
+## Output
+
+```python
+DocumentScannerWidget(output="pdf")      # default: one PDF, real page sizes
+DocumentScannerWidget(output="images")   # one JPEG per page
+```
+
+`output="images"` writes several files into the input, so the input needs
+`multiple` for anything beyond one page:
+
+```python
+DocumentScannerWidget(output="images", attrs={"multiple": True})
+```
+
+## Reacting to a finished scan
+
+```javascript
+document.addEventListener("camerakit:scan-complete", function (event) {
+  console.warn(event.detail.pageCount, event.detail.format, event.detail.files);
+});
+```
 
 ## Progressive enhancement
 
-Until `doc_scan.js` binds to a `.camera-kit-scanner` container, the native `<input type="file">` stays visible — if JavaScript fails to load, users can still pick an existing file manually. Once bound, the widget hides the native input (`camera-kit-js-ready` class) and the scan button becomes the only way in.
+Until `doc_scan.js` binds to a `.camera-kit-scanner` container, the native
+`<input type="file">` stays visible: if JavaScript fails to load, users can
+still pick a file by hand. Once bound, the widget hides the native input and
+the scan button becomes the way in.
 
-## Offline / self-hosted assets
+## Styling
 
-Both `opencv.js` (~13MB) and `jspdf.umd.min.js` are vendored into the package rather than loaded from a CDN, so the widget works without external network access at runtime — useful for low-connectivity deployments. See [Installation](../getting-started/install.md) for how these are obtained when installing from a wheel.
+`camera_kit.css` ships the overlay layout *and* a minimal set of button rules,
+so the scanner looks deliberate on a page with no CSS framework. The classes
+follow Bootstrap's naming (`btn`, `btn-primary`…), so a project already on
+Bootstrap inherits its own styling instead.
+
+## Translations
+
+The browser code contains no user-facing text. Every string comes from the
+widget as a JSON block, translated server-side through the usual `.po`
+catalogues — so the scanner speaks whatever language the request does.
+
+## Offline and self-hosted assets
+
+`opencv.js` (~13 MB) and `jspdf.umd.min.js` are vendored into the package
+rather than loaded from a CDN, so the widget works with no external network
+access at runtime — which is the point in low-connectivity deployments.
 
 ## Limitations
 
-- Edge detection quality depends on lighting and contrast between the document and its background — the manual corner-drag is the fallback, not an edge case to eliminate.
-- No OCR, no field extraction — the output is a PDF/image, nothing more.
-- No server-side re-validation of the scanned image; if your use case needs a trusted image (not just a convenience input), validate it after upload like any other file field.
+- Detection quality depends on the contrast between the document and what it
+  sits on. The manual corner-drag is the fallback, not an edge case to
+  eliminate.
+- No OCR and no field extraction: the output is a PDF or an image, nothing
+  more.
+- Nothing is re-validated server-side. If your use case needs a *trusted*
+  image rather than a convenient one, validate the upload like any other file.

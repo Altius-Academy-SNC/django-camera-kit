@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-camera-kit"
-version = "0.1.0"
-description = "Document scanning and KYC face verification widgets for Django"
+version = "0.2.0"
+description = "Format-aware document scanning and liveness-checked KYC widgets for Django"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
@@ -13,7 +13,17 @@ authors = [
     {name = "Paul Guindo", email = "paulguindo@altius-group.ch"},
     {name = "Altius Academy SNC"},
 ]
-keywords = ["django", "camera", "document-scanner", "kyc", "identity-verification"]
+keywords = [
+    "django",
+    "camera",
+    "document-scanner",
+    "scanner",
+    "a4",
+    "id-card",
+    "kyc",
+    "liveness",
+    "identity-verification",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: Django",
@@ -36,6 +46,7 @@ dependencies = [
 ]
 
 [project.urls]
+Changelog = "https://github.com/Altius-Academy-SNC/django-camera-kit/blob/main/CHANGELOG.md"
 Homepage = "https://github.com/Altius-Academy-SNC/django-camera-kit"
 Documentation = "https://altius-academy-snc.github.io/django-camera-kit"
 Repository = "https://github.com/Altius-Academy-SNC/django-camera-kit"
@@ -59,6 +70,8 @@ dev = [
     "pillow>=10.0",
     "pytest",
     "pytest-django",
+    "ruff",
+    "mypy",
 ]
 
 [tool.setuptools]
@@ -70,7 +83,87 @@ include = ["django_camera_kit*"]
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
 pythonpath = ["."]
+# tests_kyc/ needs PostgreSQL + pgvector and the insightface model pack; it is
+# run on demand (see CONTRIBUTING notes in the docs), not in the default suite.
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+# R10 - a warning tolerated once is tolerated forever.
+filterwarnings = ["error"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = ["**/migrations/*"]
+
+[tool.ruff.lint]
+# R10 - the strictest setting the project sustains.
+select = [
+    "A",    # shadowed builtins
+    "ARG",  # unused arguments
+    "B",    # bugbear
+    "C4",   # comprehensions
+    "C90",  # mccabe complexity
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # import order
+    "N",    # naming
+    "PL",   # pylint
+    "PTH",  # pathlib
+    "RET",  # return flow
+    "RUF",
+    "S",    # bandit
+    "SIM",  # simplify
+    "T20",  # no print()
+    "UP",   # pyupgrade
+    "W",
+]
+
+ignore = [
+    # Django's declarative API is built on class attributes that hold lists
+    # and dicts: Meta.fields, Meta.widgets, Media.js. They are the framework's
+    # shape, not shared mutable state.
+    "RUF012",
+]
+
+[tool.ruff.lint.mccabe]
+# R1 - simple control flow.
+max-complexity = 8
+
+[tool.ruff.lint.pylint]
+max-branches = 8
+max-statements = 40
+
+[tool.ruff.lint.per-file-ignores]
+# The format labels are shown to people and use a real multiplication sign
+# ("210 x 297" would be a typographic downgrade in every language).
+"django_camera_kit/formats.py" = ["RUF001"]
+# R8 - documented deferred import: insightface loads a model pack weighing
+# tens of megabytes, so it is imported on first use, not at startup.
+"django_camera_kit/kyc/embeddings.py" = ["PLC0415"]
+"tests/*" = ["S101", "PLR2004", "ARG001", "ARG002", "S105"]
+"tests_kyc/*" = [
+    "S101",
+    "PLR2004",
+    "ARG001",
+    "ARG002",
+    "S105",
+    "S106",
+    "S108",
+    "PLC0415",
+    "PTH118",
+    "PTH120",
+    "PTH123",
+]
+
+[tool.mypy]
+# No python_version pin: numpy ships stubs that need 3.12 syntax, and ruff's
+# target-version already guards the 3.10 floor for our own code.
+files = ["django_camera_kit"]
+exclude = ["migrations"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+check_untyped_defs = true

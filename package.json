@@ -1,0 +1,12 @@
+{
+  "name": "django-camera-kit",
+  "private": true,
+  "description": "Browser-side tooling for the django-camera-kit package: lint and test the scanner and KYC scripts.",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "node --test \"tests_js/*.test.js\""
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5"
+  }
+}

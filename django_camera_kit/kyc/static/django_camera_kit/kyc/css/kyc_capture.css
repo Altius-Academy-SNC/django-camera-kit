@@ -1,3 +1,12 @@
+/* django-camera-kit — KYC capture flow.
+ *
+ * The guides (ID-1 rectangle, face oval) are drawn on a canvas by
+ * kyc_capture.js so they can turn green the moment framing is right; this
+ * file only lays the overlay out. It reuses the scanner's overlay rules, so
+ * a form that shows the KYC widget alone still needs camera_kit.css — the
+ * widget's Media declaration pulls both.
+ */
+
 .camera-kit-kyc {
   display: flex;
   align-items: center;
@@ -5,55 +14,45 @@
   flex-wrap: wrap;
 }
 
-/* ISO/IEC 7810 ID-1 format (85.60 x 53.98mm) — the size of virtually every
-   national ID card, driving license and payment card. The ratio is fixed
-   via aspect-ratio so it holds regardless of the camera's own aspect
-   ratio, instead of an arbitrary box that doesn't match a real card. */
-.camera-kit-kyc-id-guide {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 75%;
-  aspect-ratio: 85.6 / 53.98;
-  transform: translate(-50%, -50%);
-  border: 3px dashed rgba(255, 255, 255, 0.8);
-  border-radius: 0.5rem;
-  pointer-events: none;
+.camera-kit-kyc-status:empty {
+  display: none;
 }
 
-.camera-kit-kyc-face-guide {
-  position: absolute;
-  top: 12%;
-  left: 30%;
-  right: 30%;
-  bottom: 12%;
-  border: 3px dashed rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  pointer-events: none;
+.camera-kit-kyc-status {
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+  background: #e9ecef;
+  font-size: 0.85rem;
 }
 
-.camera-kit-kyc-hint {
-  text-align: center;
-  padding: 0.5rem 1rem;
-  margin: 0;
-  font-weight: 600;
+/* A selfie preview that is not mirrored feels wrong to everyone. The mirror
+   is display-only: the analysed canvas always holds the raw frame, so the
+   left/right challenges keep their meaning. */
+.camera-kit-mirrored {
+  transform: scaleX(-1);
+}
+
+.camera-kit-kyc-progress {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
 }
 
 .camera-kit-kyc-review {
   display: flex;
   gap: 1rem;
-  padding: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .camera-kit-kyc-review img {
   max-height: 180px;
   border-radius: 0.25rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid #39424d;
+  background: #000;
 }
 
 .camera-kit-kyc-review-status,
 .camera-kit-kyc-result {
   text-align: center;
-  padding: 0 1rem;
+  margin: 0;
 }

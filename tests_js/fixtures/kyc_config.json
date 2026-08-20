@@ -1,0 +1,32 @@
+{
+  "verifyUrl": "/kyc/verify/",
+  "quality": 0.92,
+  "labels": {
+    "trigger": "Verify my identity",
+    "cancel": "Cancel",
+    "close": "Close",
+    "capture": "Capture the ID document",
+    "send": "Send",
+    "restart": "Start over",
+    "retakeFace": "Redo the face step",
+    "idTitle": "Place your ID document inside the frame",
+    "faceTitle": "Fit your face inside the oval",
+    "progress": "{done}/{total}",
+    "verifying": "Verifying…",
+    "verified": "Identity verified.",
+    "rejected": "Verification refused — please try again.",
+    "badgeVerified": "Verified",
+    "badgeRejected": "Not verified",
+    "hintNoFace": "No face detected — look at the camera",
+    "hintCloser": "Move closer",
+    "hintFarther": "Move back a little",
+    "hintCenter": "Centre your face in the oval",
+    "hintFrontal": "Look straight at the camera",
+    "hintTurnLeft": "Slowly turn your head to the left",
+    "hintTurnRight": "Slowly turn your head to the right",
+    "errorCamera": "Cannot access the camera: {error}",
+    "errorEngine": "The face engine did not load; verification is unavailable.",
+    "errorNetwork": "Network error: {error}",
+    "errorServer": "The verification could not be processed."
+  }
+}
