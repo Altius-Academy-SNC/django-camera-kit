@@ -46,7 +46,9 @@ liveness check worth its name.
   `UnknownFormatError` — and settings validated when they are read, with a
   message that says what to fix.
 - **Translations**: every string the browser shows now comes from the widget as
-  a JSON block, translated server-side through the usual `.po` catalogues.
+  a JSON block, translated server-side through the usual `.po` catalogues — and
+  the package **ships its own French catalogue**, so `pip install` gives a
+  French scanner and a French KYC flow without writing a single `.po` entry.
 - **Tests for the browser code**: the geometry of the scanner and of the
   liveness challenge runs in a VM context under `node --test`, with no browser,
   no camera and no OpenCV. ESLint holds the JavaScript to the same complexity,

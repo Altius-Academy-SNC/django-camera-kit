@@ -2,9 +2,9 @@
  *
  * The guides (ID-1 rectangle, face oval) are drawn on a canvas by
  * kyc_capture.js so they can turn green the moment framing is right; this
- * file only lays the overlay out. It reuses the scanner's overlay rules, so
- * a form that shows the KYC widget alone still needs camera_kit.css — the
- * widget's Media declaration pulls both.
+ * file only lays the overlay out. The overlay, modal and button rules are
+ * shared with the scanner, so the widget's Media declaration pulls
+ * camera_kit.css in as well.
  */
 
 .camera-kit-kyc {

@@ -1,4 +1,5 @@
 recursive-include django_camera_kit/static *
 recursive-include django_camera_kit/templates *
+recursive-include django_camera_kit/locale *.po *.mo
 recursive-include django_camera_kit/kyc/static *
 recursive-include django_camera_kit/kyc/templates *

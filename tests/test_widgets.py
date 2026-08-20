@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 from django import forms
 from django.test import override_settings
+from django.utils import translation
 
 from django_camera_kit.exceptions import ConfigurationError, UnknownFormatError
 from django_camera_kit.kyc.widgets import KYCVerificationWidget
@@ -140,3 +141,41 @@ class TestBrowserFixtures:
         config = KYCVerificationWidget(verify_url="/kyc/verify/").build_config()
         assert set(fixture) == set(config)
         assert set(fixture["labels"]) == set(config["labels"])
+
+
+class TestFrenchCatalogue:
+    """The package ships its own French translations, so `pip install` gives
+    a French scanner without the project writing a single .po entry."""
+
+    def test_the_scanner_speaks_french(self):
+        with translation.override("fr"):
+            labels = DocumentScannerWidget().build_config()["labels"]
+        assert labels["trigger"] == "Scanner un document"
+        assert labels["batch"].startswith("Mode série")
+        assert labels["hintHoldStill"] == "Ne bougez plus…"
+
+    def test_the_kyc_flow_speaks_french(self):
+        with translation.override("fr"):
+            labels = KYCVerificationWidget(verify_url="/kyc/verify/").build_config()["labels"]
+        assert labels["trigger"] == "Vérifier mon identité"
+        assert labels["hintTurnLeft"].startswith("Tournez")
+
+    def test_the_formats_speak_french(self):
+        with translation.override("fr"):
+            config = DocumentScannerWidget().build_config()
+        formats = {fmt["key"]: fmt["label"] for fmt in config["formats"]}
+        assert formats["id_card"].startswith("Carte d’identité")
+        assert formats["original"] == "Garder les proportions d’origine"
+
+    def test_every_label_is_translated(self):
+        with translation.override("en"):
+            english = DocumentScannerWidget().build_config()["labels"]
+        with translation.override("fr"):
+            french = DocumentScannerWidget().build_config()["labels"]
+        # These read the same in both languages: "Orientation", "Portrait",
+        # "Page {number}", "{count} page(s)".
+        identical = ("orientation", "portrait", "pageNumber", "pageCount")
+        untranslated = [
+            key for key, value in english.items() if french[key] == value and key not in identical
+        ]
+        assert not untranslated, f"still in English: {untranslated}"
